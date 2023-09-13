@@ -12,33 +12,35 @@ datasource db {
 
 model User {
   id              Int          @id @default(autoincrement())
-  email           String       @unique
-  firstname       String
-  lastname        String
-  password        String
-  gender          String?
-  pronouns         String?
-  profile_picture String?
+  email           String       @unique @db.VarChar(255)
+  firstname       String       @db.VarChar(255)
+  lastname        String       @db.VarChar(255)
+  password        String       @db.VarChar(255)
+  gender          String?      @db.VarChar(255)
+  pronouns        String?      @db.VarChar(255)
+  profile_picture String?      @db.VarChar(255)
   accounts        Account[]
   session         Session[]
-  sign_up_date    DateTime
+  sign_up_date    DateTime     @default(now())
   Event           Event[]
   Invitation      Invitation[]
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
 }
 
 model Account {
   id                Int     @id @default(autoincrement())
   user_id           Int
-  type              String
-  provider          String
-  providerAccountId String
+  type              String  @db.VarChar(255)
+  provider          String  @db.VarChar(255)
+  providerAccountId String  @db.VarChar(255)
   refresh_token     String? @db.Text
   access_token      String? @db.Text
   expires_at        Int?
-  token_type        String?
-  scope             String?
+  token_type        String? @db.VarChar(255)
+  scope             String? @db.VarChar(255)
   id_token          String? @db.Text
-  session_state     String?
+  session_state     String? @db.VarChar(255)
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -67,9 +69,9 @@ model Event {
   location          String
   type              EventType
   event_date        DateTime
-  link              String?
-  picture           String?
-  description       String?
+  link              String?      @db.VarChar(255)
+  picture           String?      @db.VarChar(255)
+  description       String?      @db.VarChar(255)
   creator_id        Int
   User              User         @relation(fields: [creator_id], references: [id], onDelete: Cascade)
   date_suggestions  Json?
@@ -77,16 +79,20 @@ model Event {
   min_participants  Int?
   response_deadline DateTime?
   Invitation        Invitation[]
+  created_at        DateTime     @default(now())
+  updated_at        DateTime     @updatedAt
 }
 
 model Invitation {
-  id       Int              @id @default(autoincrement())
-  token    String
-  status   InvitationStatus
-  event_id Int
-  user_id  Int
-  Event    Event            @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  User     User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id         Int              @id @default(autoincrement())
+  token      String           @db.VarChar(255)
+  status     InvitationStatus
+  event_id   Int
+  user_id    Int
+  Event      Event            @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  User       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
 }
 
 enum EventType {
