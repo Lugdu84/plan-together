@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from '@prisma/client';
+import { EventStatus, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -13,20 +13,47 @@ async function main() {
 
     })*/
 
+    const users = []
     for (let index = 0; index < 24; ++index) {
-      await prisma.user.create({
+
+      
+    users.push(await prisma.user.create({
+        
+          data: {
+            firstname: faker.person.firstName(),
+            lastname: faker.person.lastName(),
+            email: faker.internet.email(),
+            password: hashedPassword,
+            sign_up_date: faker.date.between({
+              from: new Date("05/05/2023"),
+              to: Date.now()
+            }),
+          },
+        }))
+    }
+    console.log(users);
+    
+
+
+    for (let index = 0; index < 10; ++index) {
+      await prisma.event.create({
         data: {
-          firstname: faker.person.firstName(),
-          lastname: faker.person.lastName(),
-          email: faker.internet.email(),
-          password: hashedPassword,
-          sign_up_date: faker.date.between({
-            from: new Date("05/05/2023"),
-            to: Date.now()
-          }),
+          title: faker.lorem.sentence(5),
+          location: 'TU ME GAVES RUE ST LOUIS 33100 MONTREUIL',
+          type: 'ONLINE',
+          event_date: new Date(),
+          creator_id: getRandomUserId(users),
+          status: EventStatus.CANCELED,
+          created_at: new Date(),
+          updated_at: new Date()
         },
       })
     }
+}
+
+function getRandomUserId(users: any) {
+  const randomIndex = Math.floor(Math.random() * users.length);
+  return users[randomIndex].id;
 }
 
 main()
