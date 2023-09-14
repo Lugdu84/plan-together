@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 function Error() {
   return (
@@ -6,7 +6,7 @@ function Error() {
       <h1> Erreur</h1>
       <p>Oups, une erreur s&apos;est produite</p>
     </div>
-  )
+  );
 }
 
-export default Error
+export default Error;
