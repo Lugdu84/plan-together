@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  pgsql:
+    image: 'postgres:15.4-alpine3.18'
+    ports:
+      - '${FORWARD_DB_PORT:-5432}:5432'
+    environment:
+      PGPASSWORD: '${LOCAL_DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${LOCAL_DB_DATABASE}'
+      POSTGRES_USER: '${LOCAL_DB_USERNAME}'
+      POSTGRES_PASSWORD: '${LOCAL_DB_PASSWORD:-secret}'
+    volumes:
+      - './postgres:/var/lib/postgresql/data'
