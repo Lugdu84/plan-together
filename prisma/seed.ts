@@ -6,6 +6,8 @@ import {
   InvitationStatus,
   PrismaClient,
 } from '@prisma/client';
+import { User } from '@/app/interfaces/User';
+import { Event } from '@/app/interfaces/Event';
 
 const prisma = new PrismaClient();
 
@@ -48,13 +50,13 @@ async function main() {
           location: `${faker.location.streetAddress({
             useFullAddress: true,
           })} ${faker.location.zipCode()} ${faker.location.city()}`,
-          type: getRandom(Object.values(EventType), false),
+          type: getRandom(Object.values(EventType)) as EventType,
           event_date: faker.date.between({
             from: new Date(2023, 4, 9),
             to: new Date(2024, 0, 31),
           }),
-          creator_id: getRandom(users, true),
-          status: getRandom(Object.values(EventStatus), false),
+          creator_id: getRandomId(users),
+          status: getRandom(Object.values(EventStatus)) as EventStatus,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -72,9 +74,9 @@ async function main() {
             max: 31,
           },
         }),
-        status: getRandom(Object.values(InvitationStatus), false),
-        event_id: getRandom(events, true),
-        user_id: getRandom(users, true),
+        status: getRandom(Object.values(InvitationStatus)) as InvitationStatus,
+        event_id: getRandomId(events as Event[]),
+        user_id: getRandomId(users as User[]),
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -82,11 +84,13 @@ async function main() {
   }
 }
 
-function getRandom(obj: any, hasId: boolean) {
+function getRandomId(obj: User[] | Event[]) {
   const randomIndex = Math.floor(Math.random() * obj.length);
-  if (hasId) {
-    return obj[randomIndex].id;
-  }
+  return obj[randomIndex].id;
+}
+
+function getRandom(obj: InvitationStatus[] | EventStatus[] | EventType[]) {
+  const randomIndex = Math.floor(Math.random() * obj.length);
   return obj[randomIndex];
 }
 
@@ -94,7 +98,7 @@ main()
   .then(async () => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
+  .catch(async () => {
     await prisma.$disconnect();
     process.exit(1);
   });
