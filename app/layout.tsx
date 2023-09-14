@@ -1,9 +1,7 @@
-import './globals.css';
+import './assets/styles/globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-
-const inter = Inter({ subsets: ['latin'] });
+import { jakartaSans } from '@/app/utilities/typography';
 
 export const metadata: Metadata = {
   title: 'Plan Together',
@@ -12,8 +10,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="fr">
+      <body className={`bg-amber-100 ${jakartaSans.className}`}>
+        {children}
+      </body>
     </html>
   );
 }
