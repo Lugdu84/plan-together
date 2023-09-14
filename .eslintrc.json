@@ -25,6 +25,7 @@
         "endOfLine": "lf"
       }
     ],
+    "@typescript-eslint/no-namespace": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
