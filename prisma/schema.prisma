@@ -9,3 +9,108 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              Int          @id @default(autoincrement())
+  email           String       @unique @db.VarChar(255)
+  firstname       String       @db.VarChar(255)
+  lastname        String       @db.VarChar(255)
+  password        String       @db.VarChar(255)
+  gender          String?      @db.VarChar(255)
+  pronouns        String?      @db.VarChar(255)
+  profile_picture String?      @db.VarChar(255)
+  accounts        Account[]
+  session         Session[]
+  sign_up_date    DateTime     @default(now())
+  Event           Event[]
+  Invitation      Invitation[]
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+}
+
+model Account {
+  id                Int     @id @default(autoincrement())
+  user_id           Int
+  type              String  @db.VarChar(255)
+  provider          String  @db.VarChar(255)
+  providerAccountId String  @db.VarChar(255)
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String? @db.VarChar(255)
+  scope             String? @db.VarChar(255)
+  id_token          String? @db.Text
+  session_state     String? @db.VarChar(255)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  user_id      Int
+  expires      DateTime
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Event {
+  id                Int          @id @default(autoincrement())
+  title             String
+  location          String
+  type              EventType
+  event_date        DateTime
+  link              String?      @db.VarChar(255)
+  picture           String?      @db.VarChar(255)
+  description       String?      @db.VarChar(255)
+  creator_id        Int
+  User              User         @relation(fields: [creator_id], references: [id], onDelete: Cascade)
+  date_suggestions  Json?
+  status            EventStatus
+  min_participants  Int?
+  response_deadline DateTime?
+  Invitation        Invitation[]
+  created_at        DateTime     @default(now())
+  updated_at        DateTime     @updatedAt
+}
+
+model Invitation {
+  id         Int              @id @default(autoincrement())
+  token      String           @db.VarChar(255)
+  status     InvitationStatus
+  event_id   Int
+  user_id    Int
+  Event      Event            @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  User       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+}
+
+enum EventType {
+  ONLINE
+  OUTING
+  SPORT
+}
+
+enum EventStatus {
+  DRAFT
+  PLANNED
+  VALIDATED
+  CANCELED
+}
+
+enum InvitationStatus {
+  PENDING
+  VALIDATED
+  REFUSED
+  EXPIRED
+}
