@@ -34,7 +34,7 @@ export default function Home() {
             type="button"
             className="bg-green-800 text-white border border-black px-4 py-2 rounded"
           >
-            Page d'activités
+            Page d&apos;activités
           </a>
         </div>
       </section>
