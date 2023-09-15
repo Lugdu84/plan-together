@@ -1,13 +1,14 @@
 import { InvitationStatus } from '@prisma/client';
 import { User } from './User';
+import { Activity } from '@/app/interfaces/Activity';
 
 export interface Invitation {
   id: number;
   token: string;
   status: InvitationStatus;
-  event_id: number;
+  activity_id: number;
   user_id: number;
-  Event: Event;
+  Activity: Activity;
   User: User;
   created_at: Date;
   updated_at: Date;

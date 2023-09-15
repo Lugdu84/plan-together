@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
 import { faker } from '@faker-js/faker/locale/fr';
 import {
-  EventStatus,
-  EventType,
+  ActivityStatus,
+  ActivityType,
   InvitationStatus,
   PrismaClient,
 } from '@prisma/client';
 import { User } from '@/app/interfaces/User';
-import { Event } from '@/app/interfaces/Event';
+import { Activity } from '@/app/interfaces/Activity';
 
 const prisma = new PrismaClient();
 
@@ -40,23 +40,23 @@ async function main() {
     );
   }
 
-  const events = [];
+  const activities = [];
   for (let index = 0; index < 10; ++index) {
-    events.push(
+    activities.push(
       // eslint-disable-next-line no-await-in-loop
-      await prisma.event.create({
+      await prisma.activity.create({
         data: {
           title: faker.lorem.sentence({ min: 3, max: 9 }),
           location: `${faker.location.streetAddress({
             useFullAddress: true,
           })} ${faker.location.zipCode()} ${faker.location.city()}`,
-          type: getRandom(Object.values(EventType)) as EventType,
-          event_date: faker.date.between({
+          type: getRandom(Object.values(ActivityType)) as ActivityType,
+          date: faker.date.between({
             from: new Date(2023, 4, 9),
             to: new Date(2024, 0, 31),
           }),
           creator_id: getRandomId(users),
-          status: getRandom(Object.values(EventStatus)) as EventStatus,
+          status: getRandom(Object.values(ActivityStatus)) as ActivityStatus,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -75,7 +75,7 @@ async function main() {
           },
         }),
         status: getRandom(Object.values(InvitationStatus)) as InvitationStatus,
-        event_id: getRandomId(events as Event[]),
+        activity_id: getRandomId(activities as Activity[]),
         user_id: getRandomId(users as User[]),
         created_at: new Date(),
         updated_at: new Date(),
@@ -84,12 +84,14 @@ async function main() {
   }
 }
 
-function getRandomId(obj: User[] | Event[]) {
+function getRandomId(obj: User[] | Activity[]) {
   const randomIndex = Math.floor(Math.random() * obj.length);
   return obj[randomIndex].id;
 }
 
-function getRandom(obj: InvitationStatus[] | EventStatus[] | EventType[]) {
+function getRandom(
+  obj: InvitationStatus[] | ActivityStatus[] | ActivityType[],
+) {
   const randomIndex = Math.floor(Math.random() * obj.length);
   return obj[randomIndex];
 }

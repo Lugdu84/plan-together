@@ -1,8 +1,8 @@
 -- CreateEnum
-CREATE TYPE "EventType" AS ENUM ('ONLINE', 'OUTING', 'SPORT');
+CREATE TYPE "ActivityType" AS ENUM ('ONLINE', 'OUTING', 'SPORT');
 
 -- CreateEnum
-CREATE TYPE "EventStatus" AS ENUM ('DRAFT', 'PLANNED', 'VALIDATED', 'CANCELED');
+CREATE TYPE "ActivityStatus" AS ENUM ('DRAFT', 'PLANNED', 'VALIDATED', 'CANCELED');
 
 -- CreateEnum
 CREATE TYPE "InvitationStatus" AS ENUM ('PENDING', 'VALIDATED', 'REFUSED', 'EXPIRED');
@@ -60,24 +60,24 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
-CREATE TABLE "Event" (
+CREATE TABLE "Activity" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "location" TEXT NOT NULL,
-    "type" "EventType" NOT NULL,
-    "event_date" TIMESTAMP(3) NOT NULL,
+    "type" "ActivityType" NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
     "link" VARCHAR(255),
     "picture" VARCHAR(255),
     "description" VARCHAR(255),
     "creator_id" INTEGER NOT NULL,
     "date_suggestions" JSONB,
-    "status" "EventStatus" NOT NULL,
+    "status" "ActivityStatus" NOT NULL,
     "min_participants" INTEGER,
     "response_deadline" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Activity_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -85,7 +85,7 @@ CREATE TABLE "Invitation" (
     "id" SERIAL NOT NULL,
     "token" VARCHAR(255) NOT NULL,
     "status" "InvitationStatus" NOT NULL,
-    "event_id" INTEGER NOT NULL,
+    "activity_id" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -115,10 +115,10 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_user_id_fkey" FOREIGN KEY ("user_i
 ALTER TABLE "Session" ADD CONSTRAINT "Session_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Event" ADD CONSTRAINT "Event_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Activity" ADD CONSTRAINT "Activity_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_activity_id_fkey" FOREIGN KEY ("activity_id") REFERENCES "Activity"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
