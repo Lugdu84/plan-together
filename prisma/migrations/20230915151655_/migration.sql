@@ -68,7 +68,7 @@ CREATE TABLE "Activity" (
     "date" TIMESTAMP(3) NOT NULL,
     "link" VARCHAR(255),
     "picture" VARCHAR(255),
-    "description" VARCHAR(255),
+    "description" TEXT,
     "creator_id" INTEGER NOT NULL,
     "date_suggestions" JSONB,
     "status" "ActivityStatus" NOT NULL,
