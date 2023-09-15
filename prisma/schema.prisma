@@ -71,7 +71,7 @@ model Activity {
   date              DateTime
   link              String?        @db.VarChar(255)
   picture           String?        @db.VarChar(255)
-  description       String?        @db.VarChar(255)
+  description       String?
   creator_id        Int
   User              User           @relation(fields: [creator_id], references: [id], onDelete: Cascade)
   date_suggestions  Json?

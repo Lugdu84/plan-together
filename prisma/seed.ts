@@ -55,6 +55,7 @@ async function main() {
             from: new Date(2023, 4, 9),
             to: new Date(2024, 0, 31),
           }),
+          description: faker.lorem.paragraphs({ min: 1, max: 5 }),
           creator_id: getRandomId(users),
           status: getRandom(Object.values(ActivityStatus)) as ActivityStatus,
           created_at: new Date(),
