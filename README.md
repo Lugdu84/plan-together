@@ -30,4 +30,10 @@ $ npx prisma migrate dev
 
 $ npx prisma db seed 
 #to populate database with fake data
+
+$ npx prisma studio
+#to open a database viewer
+
+$ docker stop
+#to stop container
 ```

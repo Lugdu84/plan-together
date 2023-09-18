@@ -1,15 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { faker } from '@faker-js/faker/locale/fr';
-import {
-  EventStatus,
-  EventType,
-  InvitationStatus,
-  PrismaClient,
-} from '@prisma/client';
+import { EventStatus, EventType, InvitationStatus } from '@prisma/client';
 import { User } from '@/app/interfaces/User';
 import { Event } from '@/app/interfaces/Event';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/utilities/prismadb';
 
 async function main() {
   await prisma.user.deleteMany();
