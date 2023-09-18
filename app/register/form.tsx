@@ -28,7 +28,7 @@ export default function RegisterForm() {
         return;
       }
       // TODO: implement toast
-      signIn(undefined, { callbackUrl: '/' });
+      signIn(undefined, { callbackUrl: '/login' });
       console.log('ok user enregistré');
     } catch (error) {
       // TODO: implement toast

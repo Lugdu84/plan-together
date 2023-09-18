@@ -1,15 +1,26 @@
 'use client';
 
+/* eslint-disable import/prefer-default-export */
+
 import React from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
 // Juste pour tester l'authentication à peaufiner
 
-function SignInButton() {
+export function SignInButton() {
   return (
     <button type="button" onClick={() => signIn()}>
       connexion
     </button>
   );
 }
-export default SignInButton;
+
+export function LogOutBtn() {
+  return (
+    <div>
+      <button type="button" onClick={() => signOut()}>
+        Deconnexion
+      </button>
+    </div>
+  );
+}

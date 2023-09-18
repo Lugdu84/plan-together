@@ -1,11 +1,12 @@
 import { compare } from 'bcryptjs';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/utilities/prismadb';
 
 const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: '/login',
+  },
   session: {
     strategy: 'jwt',
   },
