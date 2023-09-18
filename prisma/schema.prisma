@@ -22,7 +22,7 @@ model User {
   accounts        Account[]
   session         Session[]
   sign_up_date    DateTime     @default(now())
-  Event           Event[]
+  Activity        Activity[]
   Invitation      Invitation[]
   created_at      DateTime     @default(now())
   updated_at      DateTime     @updatedAt
@@ -63,45 +63,45 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Event {
-  id                Int          @id @default(autoincrement())
+model Activity {
+  id                Int            @id @default(autoincrement())
   title             String
   location          String
-  type              EventType
-  event_date        DateTime
-  link              String?      @db.VarChar(255)
-  picture           String?      @db.VarChar(255)
-  description       String?      @db.VarChar(255)
+  type              ActivityType
+  date              DateTime
+  link              String?        @db.VarChar(255)
+  picture           String?        @db.VarChar(255)
+  description       String?
   creator_id        Int
-  User              User         @relation(fields: [creator_id], references: [id], onDelete: Cascade)
+  User              User           @relation(fields: [creator_id], references: [id], onDelete: Cascade)
   date_suggestions  Json?
-  status            EventStatus
+  status            ActivityStatus
   min_participants  Int?
   response_deadline DateTime?
   Invitation        Invitation[]
-  created_at        DateTime     @default(now())
-  updated_at        DateTime     @updatedAt
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
 }
 
 model Invitation {
-  id         Int              @id @default(autoincrement())
-  token      String           @db.VarChar(255)
-  status     InvitationStatus
-  event_id   Int
-  user_id    Int
-  Event      Event            @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  User       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  created_at DateTime         @default(now())
-  updated_at DateTime         @updatedAt
+  id          Int              @id @default(autoincrement())
+  token       String           @db.VarChar(255)
+  status      InvitationStatus
+  activity_id Int
+  user_id     Int
+  Activity    Activity         @relation(fields: [activity_id], references: [id], onDelete: Cascade)
+  User        User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
 }
 
-enum EventType {
+enum ActivityType {
   ONLINE
   OUTING
   SPORT
 }
 
-enum EventStatus {
+enum ActivityStatus {
   DRAFT
   PLANNED
   VALIDATED
