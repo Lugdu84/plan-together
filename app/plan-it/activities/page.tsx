@@ -10,7 +10,11 @@ const metadata: {
 };
 
 async function Activities() {
-  const activities = await prisma.activity.findMany();
+  const activities = await prisma.activity.findMany({
+    orderBy: {
+      date: 'desc',
+    },
+  });
 
   return (
     <section>
