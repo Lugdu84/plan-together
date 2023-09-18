@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import ActivityCard from '@/app/components/ActivityCard';
+import ActivityCard from '@/components/Activity/ActivityCard';
 
 const prisma = new PrismaClient();
 
