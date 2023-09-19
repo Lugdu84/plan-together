@@ -96,9 +96,9 @@ export default function Header() {
         ) : (
           <div>
             {/* Le contenu pour les utilisateurs non authentifiés */}
-            <button type="button" style={{ paddingRight: '10px' }}>
+            <Link href="/register" style={{ paddingRight: '10px' }}>
               Register
-            </button>
+            </Link>
             <SignInButton />
           </div>
         )}
