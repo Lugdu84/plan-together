@@ -20,6 +20,7 @@ async function Activities() {
         <h1 className="font-serif italic text-7xl mb-8">{metadata.title}</h1>
         {activities.map((activity) => (
           <ActivityCard
+            id={activity.id}
             title={activity.title}
             type={activity.type}
             description={activity.description}

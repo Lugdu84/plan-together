@@ -29,13 +29,6 @@ export default function Home() {
           >
             En savoir plus
           </button>
-          <a
-            href="plan-it/activities"
-            type="button"
-            className="bg-green-800 text-white border border-black px-4 py-2 rounded"
-          >
-            Page d&apos;activités
-          </a>
         </div>
       </section>
     </main>
