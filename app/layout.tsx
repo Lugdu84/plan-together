@@ -1,7 +1,13 @@
 import './assets/styles/globals.css';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import { jakartaSans } from '@/app/utilities/typography';
+import Header from '@/components/Header/header';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { NextAuthProvider } from './providers';
+
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: 'Plan Together',
@@ -11,10 +17,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
-      <body
-        className={`bg-gray-100  dark:bg-gray-800 ${jakartaSans.className}`}
-      >
-        {children}
+      <body className={`bg-gray-100 ${jakartaSans.className}`}>
+        <NextAuthProvider>
+          <Header />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );

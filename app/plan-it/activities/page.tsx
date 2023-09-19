@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import ActivityCard from '@/components/Activity/ActivityCard';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/utilities/prismadb';
 
 const metadata: {
   title: string;
