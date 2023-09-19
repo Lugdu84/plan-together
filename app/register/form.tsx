@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function RegisterForm() {
@@ -45,49 +45,68 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <label htmlFor="firstname">
-        Firstname
-        <input
-          required
-          type="text"
-          name="firstname"
-          value={formRegisterValues.firstname}
-          onChange={handleChange}
-        />
-      </label>
-      <label htmlFor="lastname">
-        Lastname
-        <input
-          required
-          type="text"
-          name="lastname"
-          value={formRegisterValues.lastname}
-          onChange={handleChange}
-        />
-      </label>
-      <label htmlFor="email">
-        Email
-        <input
-          required
-          type="email"
-          name="email"
-          value={formRegisterValues.email}
-          onChange={handleChange}
-        />
-      </label>
-
-      <label htmlFor="password">
-        Password
-        <input
-          required
-          type="password"
-          name="password"
-          value={formRegisterValues.password}
-          onChange={handleChange}
-        />
-      </label>
-      <button type="submit"> Register</button>
+    <form onSubmit={onSubmit} className="w-full">
+      <div className="flex flex-col justify-center gap-8">
+        <label htmlFor="firstname">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Firstname</span>
+            <input
+              required
+              type="text"
+              name="firstname"
+              value={formRegisterValues.firstname}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <label htmlFor="lastname">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Lastname</span>
+            <input
+              required
+              type="text"
+              name="lastname"
+              value={formRegisterValues.lastname}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <label htmlFor="email">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Email</span>
+            <input
+              required
+              type="email"
+              name="email"
+              value={formRegisterValues.email}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <label htmlFor="password">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Password</span>
+            <input
+              required
+              type="password"
+              name="password"
+              value={formRegisterValues.password}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <button
+          className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
+          type="submit"
+        >
+          {' '}
+          Allons-y !
+        </button>
+      </div>
     </form>
   );
 }

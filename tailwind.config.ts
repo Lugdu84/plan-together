@@ -15,6 +15,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/forms'),
+  ],
 };
 export default config;

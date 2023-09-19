@@ -42,29 +42,43 @@ export default function LoginForm() {
     });
   };
   return (
-    <form onSubmit={onSubmit}>
-      <label htmlFor="email">
-        <input
-          required
-          type="email"
-          name="email"
-          placeholder="test@test.fr"
-          value={formLoginValues.email}
-          onChange={handleChange}
-        />
-      </label>
-      <label htmlFor="password">
-        <input
-          required
-          type="password"
-          name="password"
-          placeholder="votre mot de passe"
-          value={formLoginValues.password}
-          onChange={handleChange}
-        />
-      </label>
-
-      <button type="submit">Login</button>
+    <form onSubmit={onSubmit} className="w-full">
+      <div className="flex flex-col justify-center gap-8">
+        <label htmlFor="email">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Email</span>
+            <input
+              required
+              type="email"
+              name="email"
+              placeholder="ernest@durandil.fr"
+              value={formLoginValues.email}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <label htmlFor="password">
+          <div className="flex flex-col gap-2  w-full">
+            <span className="text-lg font-bold">Mot de passe</span>
+            <input
+              required
+              type="password"
+              name="password"
+              placeholder="***"
+              value={formLoginValues.password}
+              onChange={handleChange}
+              className="rounded-lg"
+            />
+          </div>
+        </label>
+        <button
+          className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
+          type="submit"
+        >
+          Login
+        </button>
+      </div>
     </form>
   );
 }
