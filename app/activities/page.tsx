@@ -15,8 +15,8 @@ async function Activities() {
   });
 
   return (
-    <section>
-      <main className="flex flex-col p-16 gap-8">
+    <main className="flex p-16 justify-center">
+      <div className="flex flex-col gap-8">
         <h1 className="font-serif italic text-7xl mb-8">{metadata.title}</h1>
         {activities.map((activity) => (
           <ActivityCard
@@ -28,8 +28,8 @@ async function Activities() {
             date={activity.date}
           />
         ))}
-      </main>
-    </section>
+      </div>
+    </main>
   );
 }
 
