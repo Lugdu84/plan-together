@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
-import prisma from '@/app/utilities/prismadb';
+import prisma from '@/prisma/prismadb';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req: Request) {

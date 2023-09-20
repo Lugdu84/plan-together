@@ -24,7 +24,6 @@ export default function LoginForm() {
       if (response?.error) {
         setError('votre mdp ou email est invalide');
       } else {
-        // TODO: implementer la redirection vers le dashboard
         router.push('/dashboard');
         console.log('ok vous allez etre redirigé vers le dashboard');
       }

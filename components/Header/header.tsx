@@ -7,11 +7,12 @@ import {
   faCalendar,
   faBell,
   faEllipsisV,
+  faDoorOpen,
 } from '@fortawesome/free-solid-svg-icons';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { SignInButton, LogOutBtn } from '@/components/Button/button';
+import { Button } from '@/components/Button/button';
 
 export default function Header() {
   const { data: session } = useSession();
@@ -87,7 +88,12 @@ export default function Header() {
                     >
                       Profile
                     </Link>
-                    <LogOutBtn />
+                    <Button
+                      buttonType="warning"
+                      content=""
+                      icon={faDoorOpen}
+                      onClick={() => signOut()}
+                    />
                   </div>
                 )}
               </div>
@@ -99,7 +105,11 @@ export default function Header() {
             <Link href="/register" style={{ paddingRight: '10px' }}>
               Register
             </Link>
-            <SignInButton />
+            <Button
+              buttonType="primary"
+              content="Se connecter"
+              onClick={() => signIn()}
+            />
           </div>
         )}
       </div>
