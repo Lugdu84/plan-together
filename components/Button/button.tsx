@@ -54,6 +54,13 @@ const buttonTypes = [
   'transparent',
 ];
 
+/**
+ * @param content - Texte dans le boutton.
+ * @param buttonType - Type de bouton 'warning', 'create', 'danger', 'primary', 'validate', 'transparent'.
+ * @param className - Rajouter des classes (optionnel).
+ * @param onClick - Ajouter un effet au clic en utilisant une fonction anonyme qui retournera l'effet.
+ * @param icon Ajouter une icone en l'important avec fontAwesome.
+ */
 export function Button({
   content,
   buttonType,
