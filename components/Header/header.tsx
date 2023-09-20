@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// TODO: make real type for event
-
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +19,7 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    function handleClickOutside(event: any) {
+    function handleClickOutside(event: MouseEvent) {
       const dropdown = document.getElementById('monDropdown');
 
       if (dropdown && !dropdown.contains(event.target as Node)) {
