@@ -83,17 +83,14 @@ export default function Header() {
               </div>
             </div>
             <div className="flex space-x-4 items-center">
-              <button
-                type="button"
-                className="bg-blue-500 hover:opacity-80 transition duration-300 ease-in-out text-white px-4 py-2 rounded flex-none whitespace-nowrap"
-              >
-                {' '}
-                <FontAwesomeIcon
+              <div className="w-52 flex justify-end">
+                <Button
+                  buttonType="create"
+                  content="Créer un évènement"
                   icon={faPlus}
-                  style={{ paddingRight: '8px' }}
+                  className="whitespace-nowrap flex flex-row-reverse w-9 hover:opacity-80 hover:w-52 duration-300 ease-in-out hover:border-collapse"
                 />
-                Créer un évènement
-              </button>
+              </div>
               <div className="flex-none whitespace-nowrap relative">
                 <button
                   type="button"
