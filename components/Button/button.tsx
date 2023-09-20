@@ -37,7 +37,7 @@ function getClassName(
       defaultClass += `bg-sky-500 text-neutral-100 ${className}`;
       break;
     case 'transparent':
-      defaultClass += `bg-transparent text-primary ${className}`;
+      defaultClass += `bg-transparent border-2 border-black text-primary ${className}`;
       break;
     default:
       defaultClass += 'border-2 border-cyan-900';
@@ -74,7 +74,7 @@ export function Button({
       className={getClassName(buttonType, className)}
       onClick={onClick}
     >
-      {icon && <FontAwesomeIcon icon={icon} />}
+      {icon && <FontAwesomeIcon icon={icon} width="20px" />}
       {content}
     </button>
   );

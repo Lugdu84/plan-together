@@ -10,6 +10,7 @@ import {
   faCalendar,
   faBell,
   faDoorOpen,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -37,7 +38,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="mx-10 my-5">
+    <header className="px-10 my-5">
       <div className="flex justify-between items-center">
         <div className="flex-none">
           <span>
@@ -52,7 +53,7 @@ export default function Header() {
 
                 <Link
                   href="/dashboard"
-                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
                 >
                   <FontAwesomeIcon
                     icon={faHome}
@@ -63,7 +64,7 @@ export default function Header() {
 
                 <Link
                   href="/plan-it/activities"
-                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
                 >
                   <FontAwesomeIcon
                     icon={faCalendar}
@@ -74,7 +75,7 @@ export default function Header() {
 
                 <Link
                   href="/notifications"
-                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
                 >
                   <FontAwesomeIcon
                     icon={faBell}
@@ -87,7 +88,7 @@ export default function Header() {
             <div className="flex space-x-4 items-center">
               <button
                 type="button"
-                className="bg-blue-500 text-white px-4 py-2 rounded flex-none whitespace-nowrap"
+                className="bg-blue-500 hover:opacity-80 transition duration-300 ease-in-out text-white px-4 py-2 rounded flex-none whitespace-nowrap"
               >
                 {' '}
                 <FontAwesomeIcon
@@ -102,7 +103,7 @@ export default function Header() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   <span
-                    className="bg-primary p-2.5 rounded-full text-white"
+                    className="bg-primary hover:opacity-80 transition duration-300 p-2.5 rounded-full text-white"
                     id="monDropdown"
                   >
                     DL
@@ -110,19 +111,24 @@ export default function Header() {
                   </span>
                 </button>
                 {isDropdownOpen && (
-                  <div className="absolute top-[40px] left-[-20px] z-10 bg-white border border-gray-300 p-2 rounded">
-                    <Link
-                      href="/profile"
-                      className="block px-2 py-1 hover:bg-gray-200"
-                    >
-                      Profile
+                  <div className="absolute top-[40px] flex flex-col items-center left-[-100px] z-10 bg-white border border-gray-300 p-2 rounded">
+                    <Link href="/profile" className="block p-px py-1 w-full">
+                      <Button
+                        buttonType="primary"
+                        content="Profil"
+                        className="hover:opacity-80 transition duration-300 w-full"
+                        icon={faUser}
+                      />
                     </Link>
-                    <Button
-                      buttonType="warning"
-                      content=""
-                      icon={faDoorOpen}
-                      onClick={() => signOut()}
-                    />
+                    <div className="block p-px py-1 w-full">
+                      <Button
+                        buttonType="warning"
+                        content="Déconnexion"
+                        className="hover:opacity-80 transition duration-300 w-full"
+                        icon={faDoorOpen}
+                        onClick={() => signOut()}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
