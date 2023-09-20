@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// TODO: make real type for event
+
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/Button/button';
 
 export default function Header() {
@@ -18,14 +21,10 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    function handleClickOutside(
-      event: MouseEvent<Element, MouseEvent<HTMLDivElement, MouseEvent>>,
-    ) {
-      console.log('target', event.target);
-
+    function handleClickOutside(event: any) {
       const dropdown = document.getElementById('monDropdown');
 
-      if (dropdown && !dropdown.contains(event.currentTarget)) {
+      if (dropdown && !dropdown.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     }
