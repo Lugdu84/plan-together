@@ -6,17 +6,36 @@ import {
   faHome,
   faCalendar,
   faBell,
-  faEllipsisV,
   faDoorOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Button } from '@/components/Button/button';
 
 export default function Header() {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(
+      event: MouseEvent<Element, MouseEvent<HTMLDivElement, MouseEvent>>,
+    ) {
+      console.log('target', event.target);
+
+      const dropdown = document.getElementById('monDropdown');
+
+      if (dropdown && !dropdown.contains(event.currentTarget)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    window.addEventListener('click', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="mx-10 my-5">
@@ -32,7 +51,10 @@ export default function Header() {
               <div className="flex space-x-4">
                 {/* Le contenu pour les utilisateurs authentifiés */}
 
-                <Link href="/dashboard">
+                <Link
+                  href="/dashboard"
+                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                >
                   <FontAwesomeIcon
                     icon={faHome}
                     style={{ paddingRight: '8px' }}
@@ -40,7 +62,10 @@ export default function Header() {
                   Dashboard
                 </Link>
 
-                <Link href="/plan-it/activities">
+                <Link
+                  href="/plan-it/activities"
+                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                >
                   <FontAwesomeIcon
                     icon={faCalendar}
                     style={{ paddingRight: '8px' }}
@@ -48,7 +73,10 @@ export default function Header() {
                   Evènements
                 </Link>
 
-                <Link href="/notifications">
+                <Link
+                  href="/notifications"
+                  className="hover:border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                >
                   <FontAwesomeIcon
                     icon={faBell}
                     style={{ paddingRight: '8px' }}
@@ -70,18 +98,20 @@ export default function Header() {
                 Créer un évènement
               </button>
               <div className="flex-none whitespace-nowrap relative">
-                Avatar{' '}
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <FontAwesomeIcon
-                    icon={faEllipsisV}
-                    style={{ paddingLeft: '8px' }}
-                  />
+                  <span
+                    className="bg-primary p-2.5 rounded-full text-white"
+                    id="monDropdown"
+                  >
+                    DL
+                    {/* TODO: Implémenter l'avatar si il est stocké sinon les initiales de l'utilisateur */}
+                  </span>
                 </button>
                 {isDropdownOpen && (
-                  <div className="absolute top-[40px] left-[-40px] z-10 bg-white border border-gray-300 p-2 rounded">
+                  <div className="absolute top-[40px] left-[-20px] z-10 bg-white border border-gray-300 p-2 rounded">
                     <Link
                       href="/profile"
                       className="block px-2 py-1 hover:bg-gray-200"
