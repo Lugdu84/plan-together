@@ -12,11 +12,15 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/Button/button';
 
 export default function Header() {
+  const currentRoute = usePathname();
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  console.log(currentRoute === '/dashboard');
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -45,12 +49,16 @@ export default function Header() {
         {session ? (
           <div className="flex justify-between items-center w-full">
             <div className="flex justify-center w-full">
-              <div className="flex space-x-4">
+              <div className="flex gap-16">
                 {/* Le contenu pour les utilisateurs authentifiés */}
 
                 <Link
                   href="/dashboard"
-                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className={` ${
+                    currentRoute === '/dashboard'
+                      ? 'font-extrabold border-b-2 border-black p-0 text-lg'
+                      : 'border-b-2 border-transparent hover:border-gray-300 transition duration-300 ease-in-out text-lg'
+                  }`}
                 >
                   <FontAwesomeIcon
                     icon={faHome}
@@ -61,7 +69,11 @@ export default function Header() {
 
                 <Link
                   href="/plan-it/activities"
-                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className={` ${
+                    currentRoute === '/plan-it/activities'
+                      ? 'font-extrabold border-b-2 border-black text-lg'
+                      : 'border-b-2 border-transparent hover:border-gray-300 transition duration-300 ease-in-out text-lg'
+                  }`}
                 >
                   <FontAwesomeIcon
                     icon={faCalendar}
@@ -72,7 +84,11 @@ export default function Header() {
 
                 <Link
                   href="/notifications"
-                  className="border-b-2 border-transparent hover:border-black transition duration-300 ease-in-out"
+                  className={` ${
+                    currentRoute === '/notifications'
+                      ? 'font-extrabold border-b-2 border-black text-lg'
+                      : 'border-b-2 border-transparent hover:border-gray-300 transition duration-300 ease-in-out text-lg'
+                  }`}
                 >
                   <FontAwesomeIcon
                     icon={faBell}
