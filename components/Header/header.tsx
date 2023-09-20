@@ -2,16 +2,16 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faPlus,
-  faHome,
-  faCalendar,
   faBell,
+  faCalendar,
   faEllipsisV,
+  faHome,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { SignInButton, LogOutBtn } from '@/components/Button/button';
+import { LogOutBtn, SignInButton } from '@/components/Button/button';
 
 export default function Header() {
   const { data: session } = useSession();
@@ -39,7 +39,7 @@ export default function Header() {
                   Dashboard
                 </Link>
 
-                <Link href="/plan-it/activities">
+                <Link href="/activities">
                   <FontAwesomeIcon
                     icon={faCalendar}
                     style={{ paddingRight: '8px' }}
