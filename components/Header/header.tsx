@@ -2,11 +2,11 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faPlus,
-  faHome,
-  faCalendar,
   faBell,
+  faCalendar,
   faDoorOpen,
+  faHome,
+  faPlus,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -19,8 +19,6 @@ export default function Header() {
   const currentRoute = usePathname();
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  console.log(currentRoute === '/dashboard');
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -68,7 +66,7 @@ export default function Header() {
                 </Link>
 
                 <Link
-                  href="/plan-it/activities"
+                  href="/activities"
                   className={` ${
                     currentRoute === '/plan-it/activities'
                       ? 'font-extrabold border-b-2 border-black text-lg'

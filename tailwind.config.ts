@@ -41,8 +41,15 @@ module.exports = {
       },
     },
   },
-  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
-  plugins: [require('tailwindcss-animate')],
+
+  plugins: [
+    // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+    require('tailwindcss-animate'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/forms'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/typography'),
+  ],
 };
 
 export {};
