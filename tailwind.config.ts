@@ -16,6 +16,15 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      colors: {
+        primary: '#2D3648',
+        transparent: 'transparent',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
@@ -35,3 +44,5 @@ module.exports = {
   // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   plugins: [require('tailwindcss-animate')],
 };
+
+export {};
