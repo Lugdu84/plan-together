@@ -3,10 +3,9 @@
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
 import {
   DropdownMenu,
@@ -27,7 +26,6 @@ import { Avatar } from '@/components/ui/avatar';
 // import { Avatar } from '@radix-ui/react-avatar';
 
 export default function Navigation() {
-  const currentRoute = usePathname();
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -99,7 +97,9 @@ export default function Navigation() {
 
     <nav className="flex items-center lg:px-16 xl:px-32 py-6 justify-between">
       <Link href="/" className="text-xl font-semibold font-serif leading-none">
-        Plan Together
+        <h1 className="hover:text-gray-600 transition duration-300 ease-in-out">
+          Plan Together
+        </h1>
       </Link>
       <div>
         {session ? (
@@ -135,7 +135,7 @@ export default function Navigation() {
             <DropdownMenu
               onOpenChange={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger className="focus-visible:outline-none hover:opacity-80 transition duration-300 ease-in-out">
                 <div className="flex items-center rounded-full">
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage src="https://avatars.githubusercontent.com/u/6728594?v=4" />
@@ -144,15 +144,19 @@ export default function Navigation() {
                     </AvatarFallback>
                   </Avatar>
                   <FontAwesomeIcon
-                    icon={isDropdownOpen ? faArrowUp : faArrowDown}
-                    className="px-4 transition duration-300 rotate"
+                    icon={faArrowUp}
+                    className={
+                      isDropdownOpen
+                        ? 'px-4 rotate-180 transition duration-300 ease-in-out'
+                        : 'px-4 transition duration-300 ease-in-out'
+                    }
                   />
                   <DropdownMenuContent>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
                       <Link href="/profil">Profil</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
                       <Link href="/signout">Se déconnecter</Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
