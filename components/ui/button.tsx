@@ -1,7 +1,5 @@
 import * as React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Slot } from '@radix-ui/react-slot';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
