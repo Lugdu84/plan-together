@@ -1,4 +1,4 @@
-import prisma from '../../../prisma/prismadb';
+import prisma from '@/prisma/prismadb';
 import ActivityCard from '@/components/Activity/ActivityCard';
 
 const metadata: {

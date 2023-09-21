@@ -47,7 +47,7 @@ export default function Header() {
         {session ? (
           <div className="flex justify-between items-center w-full">
             <div className="flex justify-center w-full">
-              <div className="flex space-x-4">
+              <div className="flex gap-16">
                 {/* Le contenu pour les utilisateurs authentifiés */}
 
                 <Link
