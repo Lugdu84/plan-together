@@ -1,12 +1,6 @@
 import { InvitationStatus } from '@prisma/client';
 import prisma from '@/app/utilities/prismadb';
 
-const metadata: {
-  title: string;
-} = {
-  title: 'Événement',
-};
-
 async function Activity({ params }: { params: { id: string } }) {
   const activity = await prisma.activity.findUniqueOrThrow({
     where: {
