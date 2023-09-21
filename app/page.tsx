@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { rowan } from '@/app/utilities/typography';
 import { Button } from '@/components/Button/button';
 
@@ -29,13 +28,6 @@ export default function Home() {
             content="En savoir plus"
             className="hover:bg-slate-200 transition duration-300"
           />
-          <Link href="/plan-it/activities">
-            <Button
-              buttonType="primary"
-              content="Page d'activités"
-              className="hover:opacity-80 transition duration-300"
-            />
-          </Link>
         </div>
       </section>
     </main>

@@ -14,7 +14,7 @@ async function main() {
   );
 
   const users = [];
-  for (let index = 0; index < 24; ++index) {
+  for (let index = 0; index < 50; ++index) {
     const fakeFirstName = faker.person.firstName();
     const fakeLastName = faker.person.lastName();
     users.push(
@@ -35,7 +35,7 @@ async function main() {
   }
 
   const activities = [];
-  for (let index = 0; index < 10; ++index) {
+  for (let index = 0; index < 20; ++index) {
     activities.push(
       // eslint-disable-next-line no-await-in-loop
       await prisma.activity.create({
@@ -59,7 +59,7 @@ async function main() {
     );
   }
 
-  for (let index = 0; index < 30; ++index) {
+  for (let index = 0; index < 100; ++index) {
     // eslint-disable-next-line no-await-in-loop
     await prisma.invitation.create({
       data: {
