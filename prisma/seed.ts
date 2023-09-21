@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker/locale/fr';
 import { ActivityStatus, ActivityType, InvitationStatus } from '@prisma/client';
 import { User } from '@/app/interfaces/User';
 import { Activity } from '@/app/interfaces/Activity';
-import prisma from '../app/utilities/prismadb';
+import prisma from './prismadb';
 
 async function main() {
   await prisma.user.deleteMany();
