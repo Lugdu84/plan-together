@@ -1,5 +1,9 @@
 import { InvitationStatus } from '@prisma/client';
-import prisma from '@/app/utilities/prismadb';
+import { faMapLocation, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
+import prisma from '@/prisma/prismadb';
+import { Button } from '@/components/Button/button';
 
 async function Activity({ params }: { params: { id: string } }) {
   const activity = await prisma.activity.findUniqueOrThrow({
@@ -21,17 +25,27 @@ async function Activity({ params }: { params: { id: string } }) {
       <div className="flex flex-col w-3/5 gap-16 max-w-3xl">
         <header className="flex flex-col gap-16">
           <div className="flex flex-col gap-4">
+            <span className="inline-flex max-w-fit font-bold py-0.5 px-2 rounded-md text-neutral-800 bg-neutral-300 mb-4">
+              {activity.type}
+            </span>
             <h1 className="text-2xl font-serif italic md:text-5xl mb-4">
               {activity.title}
             </h1>
-            <p className="text-gray-500">{activity.type}</p>
             <p className="text-lg text-gray-700">
               {activity.User.firstname} {activity.User.lastname}
             </p>
           </div>
           <div className="flex justify-between">
-            <p className="text-lg">{activity.location}</p>
-            <p className="text-lg">{activity.date.toLocaleDateString()}</p>
+            <p className="text-lg flex gap-4 items-center">
+              <FontAwesomeIcon className="inline-flex" icon={faMapLocation} />
+              <span className="inline-flex">{activity.location}</span>
+            </p>
+            <p className="text-lg flex gap-4 items-center">
+              <FontAwesomeIcon className="inline-flex" icon={faCalendarAlt} />
+              <span className="inline-flex">
+                {activity.date.toLocaleDateString()}
+              </span>
+            </p>
           </div>
         </header>
         <section>
@@ -43,7 +57,7 @@ async function Activity({ params }: { params: { id: string } }) {
         <section className="flex flex-col gap-4">
           <h2 className="text-4xl font-serif mb-8">Personnes invitées</h2>
           {activity.Invitation.map((invitation) => (
-            <div className="flex justify-between w-1/2">
+            <p className="flex justify-between w-1/2">
               <span
                 className={
                   invitation.status === InvitationStatus.EXPIRED
@@ -81,8 +95,11 @@ async function Activity({ params }: { params: { id: string } }) {
               ) : (
                 ''
               )}
-            </div>
+            </p>
           )).sort()}
+          <div className="flex self-end max-w-lg">
+            <Button content="Inviter" buttonType="primary" icon={faPlus} />
+          </div>
         </section>
       </div>
     </main>
