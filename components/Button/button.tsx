@@ -19,7 +19,7 @@ function getClassName(
   className?: string,
 ) {
   let defaultClass =
-    'rounded-md py-2 px-3 flex flex-row justify-arround items-center gap-4 ';
+    'rounded-md py-2 px-3 flex flex-row justify-start items-center gap-4 ';
   switch (buttonType) {
     case 'warning':
       defaultClass += `bg-red-500 text-neutral-100 ${className}`;
@@ -45,6 +45,7 @@ function getClassName(
   }
   return defaultClass;
 }
+
 const buttonTypes = [
   'warning',
   'create',

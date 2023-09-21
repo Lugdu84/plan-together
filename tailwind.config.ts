@@ -23,6 +23,8 @@ const config: Config = {
   plugins: [
     // eslint-disable-next-line global-require
     require('@tailwindcss/forms'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/typography'),
   ],
 };
 export default config;
