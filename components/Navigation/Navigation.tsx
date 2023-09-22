@@ -151,7 +151,7 @@ export default function Navigation() {
                   />
                   <DropdownMenuContent>
                     <DropdownMenuItem className="cursor-pointer">
-                      <Link href="/profil">Profil</Link>
+                      <Link href="/profile">Profil</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
