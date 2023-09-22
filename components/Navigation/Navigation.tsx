@@ -155,7 +155,7 @@ export default function Navigation() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
-                      <Link href="/signout" onClick={() => signOut()}>
+                      <Link href="/" onClick={() => signOut()}>
                         Se déconnecter
                       </Link>
                     </DropdownMenuItem>

@@ -1,6 +1,6 @@
 import { InvitationStatus } from '@prisma/client';
 import { User } from './User';
-import { Activity } from '@/app/interfaces/Activity';
+import { Activity } from '@/interfaces/Activity';
 
 export interface Invitation {
   id: number;

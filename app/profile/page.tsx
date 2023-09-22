@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,6 +15,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function TabsDemo() {
+  const { data: session } = useSession();
+
   return (
     <div className="flex justify-center pt-16">
       <Tabs defaultValue="account" className="w-[400px]">
@@ -32,12 +35,15 @@ export default function TabsDemo() {
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="space-y-1">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="Pedro Duarte" />
+                <Label htmlFor="name">Nom</Label>
+                <Input id="name" defaultValue={session?.user?.firstName} />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="@peduarte" />
+                <Label htmlFor="email"> Email </Label>
+                <Input
+                  id="email"
+                  defaultValue={session?.user?.email as string}
+                />
               </div>
             </CardContent>
             <CardFooter>

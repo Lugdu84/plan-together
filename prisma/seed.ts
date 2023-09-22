@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { faker } from '@faker-js/faker/locale/fr';
 import { ActivityStatus, ActivityType, InvitationStatus } from '@prisma/client';
-import { User } from '@/app/interfaces/User';
-import { Activity } from '@/app/interfaces/Activity';
+import { User } from '@/interfaces/User';
+import { Activity } from '@/interfaces/Activity';
 import prisma from './prismadb';
 
 async function main() {
