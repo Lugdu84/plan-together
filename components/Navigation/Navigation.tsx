@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
@@ -107,28 +106,28 @@ export default function Navigation() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink
+                  <Link
                     href="/dashboard"
                     className={navigationMenuTriggerStyle()}
                   >
                     Dashboard
-                  </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink
+                  <Link
                     href="/activities"
                     className={navigationMenuTriggerStyle()}
                   >
                     Événements
-                  </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink
+                  <Link
                     href="/notifications"
                     className={navigationMenuTriggerStyle()}
                   >
                     Notifications
-                  </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -144,7 +143,7 @@ export default function Navigation() {
                     </AvatarFallback>
                   </Avatar>
                   <FontAwesomeIcon
-                    icon={faArrowUp}
+                    icon={faArrowDown}
                     className={
                       isDropdownOpen
                         ? 'px-4 rotate-180 transition duration-300 ease-in-out'
