@@ -14,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -156,7 +155,9 @@ export default function Navigation() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
-                      <Link href="/signout">Se déconnecter</Link>
+                      <Link href="/signout" onClick={() => signOut()}>
+                        Se déconnecter
+                      </Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </div>
@@ -165,12 +166,23 @@ export default function Navigation() {
           </div>
         ) : (
           <div>
-            <Link href="/login">Se connecter</Link>
-            <Button asChild>
-              <Link href="/register" onClick={() => signOut()}>
-                S&apos;inscrire
-              </Link>
-            </Button>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link href="/login" className={navigationMenuTriggerStyle()}>
+                    Se connecter
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link
+                    href="/register"
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    S&apos;inscrire
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
         )}
       </div>
