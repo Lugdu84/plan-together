@@ -43,9 +43,9 @@ export default function LoginForm() {
   };
   return (
     <form onSubmit={onSubmit} className="w-full">
-      <div className="flex flex-col justify-center gap-8 w-full">
+      <div className="flex flex-col justify-center gap-8">
         <label htmlFor="email">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2  w-full">
             <span className="text-lg font-bold">Email</span>
             <input
               required
@@ -73,7 +73,7 @@ export default function LoginForm() {
           </div>
         </label>
         <button
-          className="px-8 py-4 mt-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
+          className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
           type="submit"
         >
           Login
