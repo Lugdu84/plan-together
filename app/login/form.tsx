@@ -1,77 +1,104 @@
 'use client';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { signIn } from 'next-auth/react';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+  email: yup.string().email('Email invalide').required('Email requis'),
+  password: yup.string().required('Mot de passe requis'),
+});
 
 export default function LoginForm() {
   const router = useRouter();
-  const [formLoginValues, setFormLoginValues] = useState({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState('');
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setFormLoginValues({ email: '', password: '' });
-      const response = await signIn('credentials', {
-        redirect: false,
-        email: formLoginValues.email,
-        password: formLoginValues.password,
-      });
-      if (response?.error) {
-        setError('votre mdp ou email est invalide');
-      } else {
-        // TODO: implementer la redirection vers le dashboard
-        router.push('/dashboard');
-        console.log('ok vous allez etre redirigé vers le dashboard');
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await signIn('credentials', {
+          redirect: false,
+          email: values.email,
+          password: values.password,
+        });
+        if (response?.status === 500) {
+          setServerError('Erreur serveur. Veuillez réessayer plus tard.');
+        } else if (response?.error && response.error === 'CredentialsSignin') {
+          setServerError('E-mail ou mot de passe incorrect');
+        } else {
+          router.push('/dashboard');
+        }
+      } catch (err) {
+        console.error(err);
+        setServerError('Une erreur est survenue');
       }
-    } catch (err) {
-      console.error(err);
-      setError(error);
-    }
-  };
+    },
+  });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormLoginValues({
-      ...formLoginValues,
-      [name]: value,
-    });
-  };
+  function toggleShowPassword() {
+    setShowPassword((prev) => !prev);
+  }
+
   return (
-    <form onSubmit={onSubmit} className="w-full">
+    <form onSubmit={formik.handleSubmit} className="w-full">
+      {serverError ? (
+        <div className="text-red-500 pb-4">{serverError}</div>
+      ) : null}
       <div className="flex flex-col justify-center gap-8">
         <label htmlFor="email">
           <div className="flex flex-col gap-2  w-full">
             <span className="text-lg font-bold">Email</span>
             <input
-              required
-              type="email"
+              id="email"
               name="email"
-              placeholder="ernest@durandil.fr"
-              value={formLoginValues.email}
-              onChange={handleChange}
+              type="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
               className="rounded-lg"
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-500">{formik.errors.email}</div>
+            ) : null}
           </div>
         </label>
         <label htmlFor="password">
-          <div className="flex flex-col gap-2  w-full">
+          <div className="flex flex-col gap-2  w-full relative">
             <span className="text-lg font-bold">Mot de passe</span>
-            <input
-              required
-              type="password"
-              name="password"
-              placeholder="***"
-              value={formLoginValues.password}
-              onChange={handleChange}
-              className="rounded-lg"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                className="rounded-lg w-full pr-12"
+              />
+              <button
+                type="button"
+                onClick={toggleShowPassword}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+              </button>
+            </div>
+            {formik.touched.password && formik.errors.password ? (
+              <div className="text-red-500">{formik.errors.password}</div>
+            ) : null}
           </div>
         </label>
+
         <button
           className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
           type="submit"
