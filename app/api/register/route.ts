@@ -27,9 +27,14 @@ export async function POST(req: Request) {
         email: user.email,
       },
     });
-  } catch (error) {
-    // TODO: implement toast
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error && error.code === 'P2002') {
+      return new Response('Cette adresse e-mail est déjà utilisée.', {
+        status: 400,
+      });
+    }
     console.error(error);
-    // return new NextResponse();
+    return new Response('Une erreur est survenue.', { status: 500 });
   }
 }
