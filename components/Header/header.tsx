@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/Button/button';
 
@@ -19,14 +19,15 @@ export default function Header() {
   const currentRoute = usePathname();
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      const dropdown = document.getElementById('monDropdown');
-
-      if (dropdown && !dropdown.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      )
         setIsDropdownOpen(false);
-      }
     }
 
     window.addEventListener('click', handleClickOutside);
@@ -105,15 +106,15 @@ export default function Header() {
                   className="whitespace-nowrap flex flex-row-reverse w-9 hover:opacity-80 hover:w-52 duration-300 ease-in-out hover:border-collapse"
                 />
               </div>
-              <div className="flex-none whitespace-nowrap relative">
+              <div
+                className="flex-none whitespace-nowrap relative"
+                ref={dropdownRef}
+              >
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <span
-                    className="bg-primary hover:opacity-80 transition duration-300 p-2.5 rounded-full text-white"
-                    id="monDropdown"
-                  >
+                  <span className="bg-primary hover:opacity-80 transition duration-300 p-2.5 rounded-full text-white">
                     DL
                     {/* TODO: Implémenter l'avatar si il est stocké sinon les initiales de l'utilisateur */}
                   </span>
