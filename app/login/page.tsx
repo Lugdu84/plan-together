@@ -10,7 +10,7 @@ export default function LoginPage() {
             Login
           </h1>
         </CardHeader>
-        <CardContent>
+        <CardContent className="w-full">
           <LoginForm />
         </CardContent>
       </Card>
