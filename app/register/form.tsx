@@ -1,51 +1,75 @@
 'use client';
 
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { signIn } from 'next-auth/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import PasswordCriteria from './passwordCriteria';
+
+const registerSchema = Yup.object().shape({
+  firstname: Yup.string()
+    .min(3, 'Doit contenir minimun 3 caractères')
+    .required('Champ firstname obligatoire'),
+  lastname: Yup.string()
+    .min(3, 'Doit contenir minimun 3 caractères')
+    .required('Champ lastname obligatoire'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Champ email obligatoire'),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    )
+    .required('Champ de password obligatoire'),
+});
 
 export default function RegisterForm() {
-  const [formRegisterValues, setFormRegisterValues] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    password: '',
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const formik = useFormik({
+    initialValues: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+    },
+    validationSchema: registerSchema,
+    onSubmit: async (values) => {
+      setErrorMessage('');
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: {
+            'content-type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          signIn(undefined, { callbackUrl: '/login' });
+          console.log('ok user enregistré');
+        } else {
+          const errorText = await response.text();
+          setErrorMessage(errorText);
+        }
+      } catch (error) {
+        console.error(error);
+        setErrorMessage('Une erreur est survenue.');
+      }
+    },
   });
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        body: JSON.stringify(formRegisterValues),
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        // TODO: implement toast
-        console.log("la réponse n'est pas ok!!");
-        return;
-      }
-      // TODO: implement toast
-      signIn(undefined, { callbackUrl: '/login' });
-      console.log('ok user enregistré');
-    } catch (error) {
-      // TODO: implement toast
-      console.error(error);
-    }
+  function toggleShowPassword() {
+    setShowPassword((prev) => !prev);
   }
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormRegisterValues({
-      ...formRegisterValues,
-      [name]: value,
-    });
-  };
-
   return (
-    <form onSubmit={onSubmit} className="w-full">
+    <form onSubmit={formik.handleSubmit} className="w-full">
+      {errorMessage ? (
+        <div className="text-red-500 pb-4">{errorMessage}</div>
+      ) : null}
       <div className="flex flex-col justify-center gap-8">
         <label htmlFor="firstname">
           <div className="flex flex-col gap-2  w-full">
@@ -54,10 +78,14 @@ export default function RegisterForm() {
               required
               type="text"
               name="firstname"
-              value={formRegisterValues.firstname}
-              onChange={handleChange}
+              value={formik.values.firstname}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="rounded-lg"
             />
+            {formik.touched.firstname && formik.errors.firstname ? (
+              <div className="text-red-500">{formik.errors.firstname}</div>
+            ) : null}
           </div>
         </label>
         <label htmlFor="lastname">
@@ -67,10 +95,14 @@ export default function RegisterForm() {
               required
               type="text"
               name="lastname"
-              value={formRegisterValues.lastname}
-              onChange={handleChange}
+              value={formik.values.lastname}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="rounded-lg"
             />
+            {formik.touched.lastname && formik.errors.lastname ? (
+              <div className="text-red-500">{formik.errors.lastname}</div>
+            ) : null}
           </div>
         </label>
         <label htmlFor="email">
@@ -80,23 +112,41 @@ export default function RegisterForm() {
               required
               type="email"
               name="email"
-              value={formRegisterValues.email}
-              onChange={handleChange}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="rounded-lg"
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-500">{formik.errors.email}</div>
+            ) : null}
           </div>
         </label>
         <label htmlFor="password">
-          <div className="flex flex-col gap-2  w-full">
-            <span className="text-lg font-bold">Password</span>
-            <input
-              required
-              type="password"
-              name="password"
-              value={formRegisterValues.password}
-              onChange={handleChange}
-              className="rounded-lg"
-            />
+          <div className="flex flex-col gap-2  w-full relative">
+            <span className="text-lg font-bold">Mot de passe</span>
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                className="rounded-lg w-full pr-12"
+              />
+              <button
+                type="button"
+                onClick={toggleShowPassword}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+              </button>
+            </div>
+            <PasswordCriteria password={formik.values.password} />
+            {formik.touched.password && formik.errors.password ? (
+              <div className="text-red-500">{formik.errors.password}</div>
+            ) : null}
           </div>
         </label>
         <button
