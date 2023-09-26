@@ -1,5 +1,4 @@
-'use client';
-
+import { getServerSession } from 'next-auth';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,8 +11,19 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import prisma from '@/prisma/prismadb';
+import Form from './form';
+import authOptions from '@/lib/auth';
 
-export default function TabsDemo() {
+export default async function TabsDemo() {
+  const session = await getServerSession(authOptions);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session?.user?.email as string,
+    },
+  });
+
   return (
     <div className="flex justify-center pt-16">
       <Tabs defaultValue="account" className="w-[400px]">
@@ -31,14 +41,7 @@ export default function TabsDemo() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="Pedro Duarte" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="@peduarte" />
-              </div>
+              <Form user={user} />
             </CardContent>
             <CardFooter>
               <Button>Save changes</Button>

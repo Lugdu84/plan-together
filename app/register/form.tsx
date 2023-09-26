@@ -150,10 +150,9 @@ export default function RegisterForm() {
           </div>
         </label>
         <button
-          className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
+          className="px-8 py-4  mt-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
           type="submit"
         >
-          {' '}
           Allons-y !
         </button>
       </div>

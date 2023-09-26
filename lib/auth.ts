@@ -2,7 +2,7 @@ import { compare } from 'bcryptjs';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/prisma/prismadb';
-import { User } from '@/app/interfaces/User';
+import { User } from '@/interfaces/User';
 
 const authOptions: NextAuthOptions = {
   pages: {
@@ -56,6 +56,7 @@ const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          firstName: token.firstName,
         },
       };
     },

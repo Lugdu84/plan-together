@@ -2,7 +2,7 @@ import './assets/styles/globals.css';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import Header from '@/components/Header/header';
+import Header from '@/components/Navigation/Navigation';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { NextAuthProvider } from './providers';
 import { jakartaSans } from '@/app/utilities/typography';
