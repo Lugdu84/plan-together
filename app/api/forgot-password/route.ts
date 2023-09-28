@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import sendEmail from '@/lib/nodemailer';
 import prisma from '@/prisma/prismadb';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -29,8 +30,13 @@ export async function POST(req: Request) {
         expiresIn: '1h',
       },
     );
-    // Envoyez un e-mail avec le lien de réinitialisation
-    console.log(`http://localhost:3000/reset-password?token=${token}`);
+    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    await sendEmail(
+      email,
+      'Réinitialisation du mot de passe',
+      `<p>Pour réinitialiser votre mot de passe sur Plan-Together, cliquez sur ce <a href="${resetLink}">lien</a>.</p>`,
+    );
+
     return new Response('Un e-mail a été envoyé', { status: 200 });
   } catch (error) {
     console.log(error);

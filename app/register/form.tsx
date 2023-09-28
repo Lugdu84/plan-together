@@ -6,7 +6,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { signIn } from 'next-auth/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import PasswordCriteria from './passwordCriteria';
+import PasswordCriteria from '../../utils/passwordCriteria';
 
 const registerSchema = Yup.object().shape({
   firstname: Yup.string()
