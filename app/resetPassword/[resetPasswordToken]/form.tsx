@@ -13,12 +13,7 @@ interface FormValues {
 }
 
 const resetPasswordSchema = yup.object().shape({
-  password: yup
-    .string()
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-    )
-    .required('Champ de password obligatoire'),
+  password: yup.string().required('Champ de password obligatoire'),
 });
 
 export default function ResetPasswordForm({

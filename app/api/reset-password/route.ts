@@ -1,4 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import * as yup from 'yup';
 import { hash } from 'bcryptjs';
 import prisma from '@/prisma/prismadb';
 
@@ -7,11 +8,28 @@ interface TokenPayload extends JwtPayload {
   email: string;
 }
 
-// handler pour réinitialiser le mot de passe
+const schema = yup.object().shape({
+  password: yup
+    .string()
+    .min(8)
+    .required()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    ),
+  token: yup.string().required(),
+});
+
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req: Request) {
   try {
     const requestBody = await req.json();
+    try {
+      await schema.validate(requestBody);
+    } catch (error) {
+      return new Response('Le mot de passe ou le token nest pas valide', {
+        status: 400,
+      });
+    }
     const { password, token } = requestBody as {
       password: string;
       token: string;

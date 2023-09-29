@@ -18,11 +18,7 @@ const registerSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Champ email obligatoire'),
-  password: Yup.string()
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-    )
-    .required('Champ de password obligatoire'),
+  password: Yup.string().required('Champ de password obligatoire'),
 });
 
 export default function RegisterForm() {

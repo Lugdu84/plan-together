@@ -37,3 +37,11 @@ $ npx prisma studio
 $ docker stop
 #to stop container
 ```
+
+## Run password reinitialization
+
+To run the password reinitialization, you need create .env.local file in the root of the project and add the following variables, use https://ethereal.email/ and create a user to use the service and add NODE_ENV=development to the .env file:
+
+JWT_SECRET=your-secret
+ETHEREAL_USER=email-user
+ETHEREAL_PASS=password-user

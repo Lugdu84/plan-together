@@ -1,11 +1,21 @@
 import jwt from 'jsonwebtoken';
+import * as yup from 'yup';
 import sendEmail from '@/lib/nodemailer';
 import prisma from '@/prisma/prismadb';
+
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+});
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req: Request) {
   try {
     const requestBody = await req.json();
+    try {
+      await schema.validate(requestBody);
+    } catch (error) {
+      return new Response("L'adresse e-mail n'est pas valide", { status: 400 });
+    }
     const { email } = requestBody as { email: string };
     const user = await prisma.user.findUnique({
       where: {
