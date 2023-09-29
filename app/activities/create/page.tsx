@@ -2,6 +2,7 @@
 
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { ActivityStatus, ActivityType } from '@prisma/client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { createActivity } from '@/app/activities/_actions/activitiesActions';
 import ActivitySchema from '@/validation/Activity';
@@ -13,11 +14,11 @@ export default function CreateActivity() {
     initialValues: {
       title: '',
       location: '',
-      // type: '',
-      // date: '',
+      type: ActivityType.ONLINE,
+      date: new Date(),
       picture: '',
       description: '',
-      // status: '',
+      status: ActivityStatus.DRAFT,
     },
     validationSchema: ActivitySchema,
     onSubmit: async (values: Activity) => {
