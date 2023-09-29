@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
@@ -9,7 +10,6 @@ import PasswordCriteria from '@/utils/passwordCriteria';
 
 interface FormValues {
   password: string;
-  passwordConfirmation: string;
 }
 
 const resetPasswordSchema = yup.object().shape({
@@ -19,28 +19,39 @@ const resetPasswordSchema = yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
     )
     .required('Champ de password obligatoire'),
-  passwordConfirmation: yup
-    .string()
-    .oneOf(
-      [yup.ref('password'), undefined],
-      'Les mots de passe doivent correspondre',
-    )
-    .required('Confirmation de mot de passe obligatoire'),
 });
 
-export default function ResetPasswordForm() {
+export default function ResetPasswordForm({
+  token,
+}: {
+  token: string | string[] | undefined;
+}) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const formik = useFormik<FormValues>({
     initialValues: {
       password: '',
-      passwordConfirmation: '',
     },
     validationSchema: resetPasswordSchema,
     onSubmit: async (values) => {
       setErrorMessage('');
       console.log(values);
+      const response = await fetch('/api/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token, password: values.password }),
+      });
+      if (response.ok) {
+        // Ajouter toast de succès
+        router.push('/login');
+      } else {
+        const { message } = await response.json();
+        setErrorMessage(message);
+      }
     },
   });
 
@@ -78,37 +89,6 @@ export default function ResetPasswordForm() {
             <PasswordCriteria password={formik.values.password} />
             {formik.touched.password && formik.errors.password ? (
               <div className="text-red-500">{formik.errors.password}</div>
-            ) : null}
-          </div>
-        </label>
-        <label htmlFor="passwordConfirmation">
-          <div className="flex flex-col gap-2  w-full relative">
-            <span className="text-lg font-bold">
-              Confirmer votre nouveau mot de passe
-            </span>
-            <div className="relative">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.passwordConfirmation}
-                className="rounded-lg w-full pr-12"
-              />
-              <button
-                type="button"
-                onClick={toggleShowPassword}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              >
-                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-              </button>
-            </div>
-            {formik.touched.passwordConfirmation &&
-            formik.errors.passwordConfirmation ? (
-              <div className="text-red-500">
-                {formik.errors.passwordConfirmation}
-              </div>
             ) : null}
           </div>
         </label>

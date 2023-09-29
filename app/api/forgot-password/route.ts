@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         expiresIn: '1h',
       },
     );
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `http://localhost:3000/resetPassword/${token}`;
     await sendEmail(
       email,
       'Réinitialisation du mot de passe',
