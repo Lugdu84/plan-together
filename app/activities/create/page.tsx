@@ -1,12 +1,12 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityStatus, ActivityType } from '@prisma/client';
+import * as Yup from 'yup';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { createActivity } from '@/app/activities/_actions/activitiesActions';
-import ActivitySchema from '@/validation/Activity';
-import { Activity } from '@/interfaces/Activity';
+import ActivityDraft from '@/interfaces/ActivityDraft';
 
 export default function CreateActivity() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -20,14 +20,27 @@ export default function CreateActivity() {
       description: '',
       status: ActivityStatus.DRAFT,
     },
-    validationSchema: ActivitySchema,
-    onSubmit: async (values: Activity) => {
-      setErrorMessage('');
+    validationSchema: Yup.object({
+      title: Yup.string().required(),
+      location: Yup.string().required(),
+      type: Yup.mixed<ActivityType>()
+        .oneOf(Object.values(ActivityType))
+        .required(),
+      date: Yup.date().default(() => new Date()),
+      status: Yup.mixed<ActivityStatus>()
+        .oneOf(Object.values(ActivityStatus))
+        .default(() => ActivityStatus.DRAFT),
+    }),
+    onSubmit: async (values: ActivityDraft) => {
+      setErrorMessage('lmao');
+      console.log('Pardon, je fais que passer');
       try {
+        console.log('banana');
         const result = await createActivity(values);
         console.log(result);
       } catch (error) {
         console.error(error);
+        setErrorMessage('Le train a déraillé');
       }
     },
   });
@@ -41,7 +54,10 @@ export default function CreateActivity() {
           </h1>
         </CardHeader>
         <CardContent>
-          <form onSubmit={formik.handleSubmit} method="POST">
+          <form onSubmit={formik.handleSubmit}>
+            {errorMessage ? (
+              <div className="text-red-500 pb-4">{errorMessage}</div>
+            ) : null}
             <div>
               <label htmlFor="title">
                 <div className="flex flex-col gap-2 w-full">
@@ -80,6 +96,9 @@ export default function CreateActivity() {
                     required
                     type="text"
                     name="type"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.type}
                     className="rounded-lg"
                   />
                 </div>
@@ -93,6 +112,7 @@ export default function CreateActivity() {
                     name="date"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    value={formik.values.date.toDateString()}
                     className="rounded-lg"
                   />
                 </div>

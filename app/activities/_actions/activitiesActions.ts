@@ -1,21 +1,21 @@
 'use server';
 
 import { getServerSession } from 'next-auth';
-import { mixed, object, string, date, number } from 'yup';
+import * as Yup from 'yup';
 import { ActivityStatus, ActivityType } from '@prisma/client';
-import { Activity } from '@/interfaces/Activity';
 import prisma from '@/prisma/prismadb';
 import authOptions from '@/lib/auth';
+import { Activity } from '@/interfaces/Activity';
 
-const activitySchema = object({
-  title: string().required(),
-  location: string().required(),
-  type: mixed<ActivityType>().oneOf(Object.values(ActivityType)).required(),
-  date: date().default(() => new Date()),
-  status: mixed<ActivityStatus>()
+const activitySchema = Yup.object({
+  title: Yup.string().required(),
+  location: Yup.string().required(),
+  type: Yup.mixed<ActivityType>().oneOf(Object.values(ActivityType)).required(),
+  date: Yup.date().default(() => new Date()),
+  status: Yup.mixed<ActivityStatus>()
     .oneOf(Object.values(ActivityStatus))
     .default(() => ActivityStatus.DRAFT),
-  creator_id: number().required(),
+  creator_id: Yup.number().required(),
 });
 
 // eslint-disable-next-line import/prefer-default-export
@@ -41,9 +41,10 @@ export async function createActivity(activity: Activity) {
       data: vData,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return err;
   }
+
   // const title = formData.get('title');
   // const location = formData.get('location');
   // const type = formData.get('type');
