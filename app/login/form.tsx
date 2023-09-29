@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Link from 'next/link';
 
 const validationSchema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
@@ -98,7 +99,12 @@ export default function LoginForm() {
             ) : null}
           </div>
         </label>
-
+        <Link
+          href="/forgot-password"
+          className="text-blue-500 hover:underline text-center mt-4"
+        >
+          Mot de passe oublié?
+        </Link>
         <button
           className="px-8 py-4 bg-green-800 hover:bg-green-950 transition-colors text-white text-lg rounded-lg"
           type="submit"
