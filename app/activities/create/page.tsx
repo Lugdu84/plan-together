@@ -3,9 +3,9 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { ActivityStatus, ActivityType } from '@prisma/client';
-import * as Yup from 'yup';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { createActivity } from '@/app/activities/_actions/activitiesActions';
+import ActivityFrontSchema from '@/validation/ActivityFront';
 import ActivityDraft from '@/interfaces/ActivityDraft';
 
 export default function CreateActivity() {
@@ -20,27 +20,20 @@ export default function CreateActivity() {
       description: '',
       status: ActivityStatus.DRAFT,
     },
-    validationSchema: Yup.object({
-      title: Yup.string().required(),
-      location: Yup.string().required(),
-      type: Yup.mixed<ActivityType>()
-        .oneOf(Object.values(ActivityType))
-        .required(),
-      date: Yup.date().default(() => new Date()),
-      status: Yup.mixed<ActivityStatus>()
-        .oneOf(Object.values(ActivityStatus))
-        .default(() => ActivityStatus.DRAFT),
-    }),
+    validationSchema: ActivityFrontSchema,
     onSubmit: async (values: ActivityDraft) => {
-      setErrorMessage('lmao');
-      console.log('Pardon, je fais que passer');
-      try {
-        console.log('banana');
-        const result = await createActivity(values);
-        console.log(result);
-      } catch (error) {
-        console.error(error);
-        setErrorMessage('Le train a déraillé');
+      setErrorMessage('');
+      // INFO: createActivity en cas de succés return void, sinon erreur
+      // TODO: TOAST A LA PLACE
+      const error = await createActivity(values);
+      if (error === 'user_not_found') {
+        setErrorMessage('Utilisateur non identifié');
+      }
+      if (error === 'database_insertion_error') {
+        setErrorMessage("Incident lors de l'enregistrement");
+      }
+      if (error === 'validation_error') {
+        setErrorMessage('Données non conformes');
       }
     },
   });
@@ -67,12 +60,12 @@ export default function CreateActivity() {
                   <input
                     required
                     type="text"
-                    name="title"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.title}
                     className="rounded-lg"
+                    {...formik.getFieldProps('title')}
                   />
+                  {formik.touched.title && formik.errors.title ? (
+                    <div className="text-red-400">{formik.errors.title}</div>
+                  ) : null}
                 </div>
               </label>
               <label htmlFor="location">
@@ -81,12 +74,12 @@ export default function CreateActivity() {
                   <input
                     required
                     type="text"
-                    name="location"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.location}
+                    {...formik.getFieldProps('location')}
                     className="rounded-lg"
                   />
+                  {formik.touched.location && formik.errors.location ? (
+                    <div className="text-red-400">{formik.errors.location}</div>
+                  ) : null}
                 </div>
               </label>
               <label htmlFor="type">
@@ -95,12 +88,12 @@ export default function CreateActivity() {
                   <input
                     required
                     type="text"
-                    name="type"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.type}
+                    {...formik.getFieldProps('type')}
                     className="rounded-lg"
                   />
+                  {formik.touched.type && formik.errors.type ? (
+                    <div className="text-red-400">{formik.errors.type}</div>
+                  ) : null}
                 </div>
               </label>
               <label htmlFor="date">
@@ -108,13 +101,15 @@ export default function CreateActivity() {
                   <span className="text-lg font-bold">Date*</span>
                   <input
                     required
-                    type="text"
-                    name="date"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.date.toDateString()}
+                    type="datetime-local"
+                    {...formik.getFieldProps('date')}
                     className="rounded-lg"
                   />
+                  {formik.touched.date && formik.errors.date ? (
+                    <div className="text-red-400">
+                      {formik.errors.date as string}
+                    </div>
+                  ) : null}
                 </div>
               </label>
             </div>
