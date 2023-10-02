@@ -7,6 +7,7 @@ import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +26,7 @@ import { Avatar } from '@/components/ui/avatar';
 export default function Navigation() {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="flex items-center lg:px-16 xl:px-32 py-6 justify-between">
@@ -85,13 +87,27 @@ export default function Navigation() {
                   />
                   <DropdownMenuContent>
                     <DropdownMenuItem className="cursor-pointer">
-                      <Link href="/profile">Profil</Link>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          router.push('/profile');
+                        }}
+                      >
+                        Mon profil
+                      </button>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
-                      <Link href="/" onClick={() => signOut()}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          signOut();
+                        }}
+                      >
                         Se déconnecter
-                      </Link>
+                      </button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </div>
